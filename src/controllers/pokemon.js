@@ -25,14 +25,14 @@ async function fetchDBPokemon() {
     .then(async (pokemon) => {
       let values = [];
       for (let i = 0; i < pokemon.length; i++) {
-        const fav = await Type.findAll({
+        const type = await PokemonTypes.findAll({
           where: {
-            id_videogame: pokemon[i].dataValues.id,
+            id_pokemon: pokemon[i].dataValues.id,
           },
         });
         values.push({
-          videogames: pokemon[i],
-          fav,
+          pokemon: pokemon[i],
+          type,
         });
       }
       return values;
@@ -69,14 +69,14 @@ async function fetchDbPokemonbyid(id) {
     .then(async (pokemon) => {
       let values = [];
       for (let i = 0; i < pokemon.length; i++) {
-        const fav = await Type.findAll({
+        const type = await PokemonTypes.findAll({
           where: {
-            id_videogame: pokemon[i].dataValues.id,
+            id_pokemon: pokemon[i].dataValues.id,
           },
         });
         values.push({
-          videogames: pokemon[i],
-          fav,
+          pokemon: pokemon[i],
+          type,
         });
       }
       return values;
@@ -128,14 +128,14 @@ async function fetchPokemonDbbyName(nombre) {
       .then(async (pokemon) => {
         let values = [];
         for (let i = 0; i < pokemon.length; i++) {
-          const fav = await Type.findAll({
+          const pokemontypes = await PokemonTypes.findAll({
             where: {
-              id_type: pokemon[i].dataValues.id,
+              id_types: pokemon[i].dataValues.id,
             },
           });
           values.push({
-            videogames: pokemon[i],
-            fav,
+            pokemon: pokemon[i],
+            pokemontypes,
           });
         }
         return values;
