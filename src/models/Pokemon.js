@@ -7,8 +7,10 @@ module.exports = (sequelize) => {
     "Pokemon",
     {
       ID: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
+        primaryKey: true,
         allowNull: false,
+        autoIncrement: true,
       },
       Nombre: {
         type: DataTypes.STRING,

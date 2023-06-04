@@ -1,7 +1,6 @@
-const { Pokemon, Type } = require("../db.js");
-
+const { Pokemon, PokemonType } = require("../db.js");
+const { Op } = require("sequelize");
 const fetch = require("node-fetch");
-const PokemonTypes = require("../models/PokemonTypes.js");
 
 async function fetchApiPokemon() {
   return await fetch(`https://pokeapi.co/api/v2/pokemon`, {
@@ -25,11 +24,13 @@ async function fetchDBPokemon() {
     .then(async (pokemon) => {
       let values = [];
       for (let i = 0; i < pokemon.length; i++) {
-        const type = await PokemonTypes.findAll({
+        const type = await PokemonType.findAll({
           where: {
             id_pokemon: pokemon[i].dataValues.id,
           },
-        });
+        })
+          .then((res) => res)
+          .catch(() => []);
         values.push({
           pokemon: pokemon[i],
           type,
@@ -63,17 +64,19 @@ async function fetchApiPokemonbyid(id) {
 async function fetchDbPokemonbyid(id) {
   return await Pokemon.findAll({
     where: {
-      id: id,
+      ID: id,
     },
   })
     .then(async (pokemon) => {
       let values = [];
       for (let i = 0; i < pokemon.length; i++) {
-        const type = await PokemonTypes.findAll({
+        const type = await PokemonType.findAll({
           where: {
             id_pokemon: pokemon[i].dataValues.id,
           },
-        });
+        })
+          .then((res) => res)
+          .catch(() => []);
         values.push({
           pokemon: pokemon[i],
           type,
@@ -98,12 +101,7 @@ async function fetchPokemonApibyName(nombre) {
         }
         throw new Error(response.statusText);
       })
-      .then((response) => {
-        return {
-          ...response,
-          results: response.results.slice(0, 15),
-        };
-      })
+      .then((response) => response)
       .catch((e) => ({
         error: e.message,
       }))
@@ -128,14 +126,16 @@ async function fetchPokemonDbbyName(nombre) {
       .then(async (pokemon) => {
         let values = [];
         for (let i = 0; i < pokemon.length; i++) {
-          const pokemontypes = await PokemonTypes.findAll({
+          const pokemonTypes = await PokemonType.findAll({
             where: {
               id_types: pokemon[i].dataValues.id,
             },
-          });
+          })
+            .then((res) => res)
+            .catch(() => []);
           values.push({
             pokemon: pokemon[i],
-            pokemontypes,
+            pokemonTypes,
           });
         }
         return values;
