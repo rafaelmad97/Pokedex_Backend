@@ -26,7 +26,7 @@ async function fetchDBPokemon() {
       for (let i = 0; i < pokemon.length; i++) {
         const type = await PokemonType.findAll({
           where: {
-            id_pokemon: pokemon[i].dataValues.id,
+            id_pokemon: pokemon[i].dataValues.ID,
           },
         })
           .then((res) => res)
@@ -72,7 +72,7 @@ async function fetchDbPokemonbyid(id) {
       for (let i = 0; i < pokemon.length; i++) {
         const type = await PokemonType.findAll({
           where: {
-            id_pokemon: pokemon[i].dataValues.id,
+            id_pokemon: pokemon[i].dataValues.ID,
           },
         })
           .then((res) => res)
@@ -128,7 +128,7 @@ async function fetchPokemonDbbyName(nombre) {
         for (let i = 0; i < pokemon.length; i++) {
           const pokemonTypes = await PokemonType.findAll({
             where: {
-              id_types: pokemon[i].dataValues.id,
+              id_pokemon: pokemon[i].dataValues.ID,
             },
           })
             .then((res) => res)
