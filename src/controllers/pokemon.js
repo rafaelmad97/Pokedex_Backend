@@ -12,7 +12,13 @@ async function fetchApiPokemon() {
       }
       throw new Error(response.statusText);
     })
-    .then((response) => response.results)
+    .then((response) => {
+      const data = response.results.map(async (pokemon) => {
+        return await fetch(pokemon.url).then((res) => res.json());
+      });
+      return Promise.all(data).then((res) => res);
+    })
+    .then((data) => data)
     .catch((e) => ({
       error: e.message,
     }))
