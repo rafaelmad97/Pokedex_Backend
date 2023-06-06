@@ -97,7 +97,8 @@ async function fetchDbPokemonbyid(id) {
 }
 
 async function fetchPokemonApibyName(nombre) {
-  if (nombre.length !== 0) {
+  var reg = /^[a-z]+$/i;
+  if (nombre.length !== 0 && reg.test(nombre)) {
     return await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`, {
       method: "GET",
     })
