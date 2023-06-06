@@ -108,7 +108,7 @@ async function fetchPokemonApibyName(nombre) {
         throw new Error(response.statusText);
       })
       .then((response) => {
-        if (response.error !== undefined) {
+        if (response.error === undefined) {
           return new Array(response);
         }
         return new Array();
