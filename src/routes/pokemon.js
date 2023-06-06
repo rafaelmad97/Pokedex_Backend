@@ -18,7 +18,7 @@ async function getPokemon(req, res) {
     const db = await fetchPokemonDbbyName(name);
     const api = await fetchPokemonApibyName(name);
 
-    return res.status(200).json({ api: [...api], db: db, name });
+    return res.status(200).json({ api: api, db: db, name });
   }
 }
 
