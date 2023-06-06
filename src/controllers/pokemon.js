@@ -112,7 +112,7 @@ async function fetchPokemonApibyName(nombre) {
       .catch((e) => new Array())
       .finally();
   } else {
-    return undefined;
+    return [];
   }
 }
 
