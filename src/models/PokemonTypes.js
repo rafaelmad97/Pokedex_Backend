@@ -4,7 +4,7 @@ const { DataTypes } = require("sequelize");
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
   sequelize.define(
-    "PokemonType",
+    "PokemonTypes",
     {
       id: {
         type: DataTypes.INTEGER,

@@ -1,4 +1,4 @@
-const { Pokemon, PokemonType } = require("../db.js");
+const { Pokemon, PokemonTypes } = require("../db.js");
 const { Op } = require("sequelize");
 const fetch = require("node-fetch");
 
@@ -30,7 +30,7 @@ async function fetchDBPokemon() {
     .then(async (pokemon) => {
       let values = [];
       for (let i = 0; i < pokemon.length; i++) {
-        const type = await PokemonType.findAll({
+        const type = await PokemonTypes.findAll({
           where: {
             id_pokemon: pokemon[i].dataValues.ID,
           },
@@ -76,7 +76,7 @@ async function fetchDbPokemonbyid(id) {
     .then(async (pokemon) => {
       let values = [];
       for (let i = 0; i < pokemon.length; i++) {
-        const type = await PokemonType.findAll({
+        const type = await PokemonTypes.findAll({
           where: {
             id_pokemon: pokemon[i].dataValues.ID,
           },
@@ -122,7 +122,7 @@ async function fetchPokemonDbbyName(nombre) {
       {
         where: {
           Nombre: {
-            [Op.like]: `%${nombre.toLowerCase()}%`,
+            [Op.like]: `%${nombre}%`,
           },
         },
       },
@@ -131,7 +131,7 @@ async function fetchPokemonDbbyName(nombre) {
       .then(async (pokemon) => {
         let values = [];
         for (let i = 0; i < pokemon.length; i++) {
-          const pokemonTypes = await PokemonType.findAll({
+          const pokemontypes = await PokemonTypes.findAll({
             where: {
               id_pokemon: pokemon[i].dataValues.ID,
             },
@@ -140,7 +140,7 @@ async function fetchPokemonDbbyName(nombre) {
             .catch(() => []);
           values.push({
             pokemon: pokemon[i],
-            pokemonTypes,
+            pokemonTypes: pokemontypes,
           });
         }
         return values;
@@ -155,19 +155,20 @@ async function fetchPokemonDbbyName(nombre) {
 
 async function createPokemon(values) {
   const { pokemon, types } = values;
-  return await Pokemon.create({ ...pokemon })
+  return await Pokemon.create(pokemon)
     .then(async (res) => {
-      const pokemonType = types.map((idtype) => {
-        return { id_pokemon: res.dataValues.id, id_types: idtype };
+      const pokemontypes = types.map((idtype) => {
+        return { id_pokemon: res.dataValues.ID, id_types: idtype };
       });
-      await PokemonTypes.bulkCreate(types);
+      await PokemonTypes.bulkCreate(pokemontypes);
       return {
         pokemon,
-        pokemonType,
+        pokemontypes,
+        message: "Pokemon añadido correctamente",
       };
     })
-    .catch(() => ({
-      error: "error al obtener los datos en la base de datos",
+    .catch((e) => ({
+      error: "error " + e.message,
     }))
     .finally();
 }

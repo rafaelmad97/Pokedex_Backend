@@ -11,7 +11,7 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 router.get("/pokemons/:idPokemon", getPokemonbyId);
 router.get("/pokemons/", getPokemon);
-router.post("/pokemons", postPokemon);
+router.post("/pokemons/", postPokemon);
 router.get("/types/", getTypes);
 
 module.exports = router;
